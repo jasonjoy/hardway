@@ -10,7 +10,7 @@ class Place
 	end
  
  	# Method to combine variables into one formatted text string
- 	def formatted
+ 	def place_string
  		"#{self.city}, #{self.country}"
  	end
 
@@ -32,12 +32,12 @@ class Map
 
 	def throw_the_dart
 		wheres_the_dart = @places[rand(places.length)]
-		"#{wheres_the_dart.formatted}"
+		"#{wheres_the_dart.place_string}"
 	end
 
 	def list_places
-		@places.each do |p|
-			puts "\t#{p.formatted}"
+		@places.each do |element|
+			puts "\t#{element.place_string}"
 		end
 	end
 end
