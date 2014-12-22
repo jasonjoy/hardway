@@ -7,7 +7,7 @@ def get_number
 		puts "Invalid input. Please enter an integer greater than 0.\n"
 		get_number		
 	end
-	return @number_of_elements
+	@number_of_elements
 end
 
 number_of_elements = get_number
@@ -16,14 +16,13 @@ number_of_elements = get_number
 # Buzz for numbers divisible by 5, the number for all others.
 (1..number_of_elements).each do |i|
 	if (i % 3 == 0) && (i % 5 == 0)
-		fizzbuzz = "Fizz Buzz"
+		puts "Fizz Buzz"
 	elsif (i % 3 == 0)
-		fizzbuzz = "Fizz"
+		puts "Fizz"
 	elsif (i % 5 == 0)
-		fizzbuzz = "Buzz"
+		puts "Buzz"
 	else 
-		fizzbuzz = i		
+		puts i		
 	end
-	puts "#{fizzbuzz}"
 end
 
