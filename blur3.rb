@@ -24,20 +24,20 @@ class Image
 		end
 	end
 
-	def blur_image
-		# Validate distance is an integer between 1 and 3
-		distance = 2
+	def blur(distance)
 
-		# Make a deep copy of data array
-		foo = Marshal.load(Marshal.dump(@data))
-		@blurry[0] = foo
-
+		# Initialize blurry as a 3 dimensional array
+		@blurry = [[[]]]
+		# Make a deep copy of image data array into the starting array for @blurry
+		@blurry[0] = Marshal.load(Marshal.dump(@data))
+		
 		# Cycle thru the same number of times as distance
 		distance.times do |i|
 
-			# Copy previous iteration of image data into 3-dimensional array
+			# Copy previous iteration of image data into the next position of @blurry
 			@blurry[i+1] = Marshal.load(Marshal.dump(@blurry[i]))	
 
+			# Using @blurry[i] as a starting point, turn on blur pixels in @blurry[i+1] 
 			@blurry[i].each_with_index do |row, row_index|
 				row.each_with_index do |pixel, column_index|
 					if pixel == 1	#Skip this whole block if pixel is not on
@@ -63,33 +63,31 @@ class Image
 					end
 				end
 			end
+		end
 
-			#Output the blurred image for each iteration of blur
-			put "Iteration number #{i+1}:"
-			@blurry[i+1].each_with_index do |row, row_index|
-				row.each_with_index do |pixel, column_index|
-					print "#{pixel}"
-				end
-				print "\n"
+		#Display the blurred image
+		puts "\nBlurred image (distance:#{distance})\n"
+		@blurry[distance].each_with_index do |row, row_index|
+			row.each_with_index do |pixel, column_index|
+				print "#{pixel}"
 			end
-			
+			print "\n"
 		end
 	end
 end
 
 image = Image.new([
-	[0, 0, 0, 0, 0],
-	[0, 0, 1, 0, 0],
-	[0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0],
-	[0, 0, 0, 1, 0],
-	[0, 0, 0, 0, 0],
-
+	[0, 0, 0, 0, 0, 0],
+	[0, 0, 1, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 1, 0, 0],
+	[0, 0, 0, 0, 0, 0],
+	[1, 0, 0, 0, 0, 0]
 ])
+
 puts "Original image:\n"
 image.output_image
 
-puts "\nBlurred image:\n"
-# Update this to take distance as user input
-image.blur_image
+image.blur(ARGV[0].to_i)
 
