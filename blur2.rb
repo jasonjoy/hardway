@@ -1,3 +1,9 @@
+# In the previous assignment we build a data representation of a pure black and white image.
+# In this assignment we will perform a transformation on the image data.
+# Given a black and white image, represented as the class you already implemented, implement
+# a blur method to run a transformation on the image. Running the blur transformation causes
+# any 1 in the image to cause the pixel to the left, right, above and below to become a 1.
+
 class Image
 	attr_accessor :data, :blurry
 	def initialize(data)
