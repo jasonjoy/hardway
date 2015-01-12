@@ -26,53 +26,46 @@ class Image
 
 	def blur(distance)
 
-		# Initialize blurry as a 3 dimensional array
-		@blurry = [[[]]]
-		# Make a deep copy of image data array into the starting array for @blurry
-		@blurry[0] = Marshal.load(Marshal.dump(@data))
-		
+		# Initialize blurry
+		@blurry = [[]]
+
 		# Cycle thru the same number of times as distance
 		distance.times do |i|
 
 			# Copy previous iteration of image data into the next position of @blurry
-			@blurry[i+1] = Marshal.load(Marshal.dump(@blurry[i]))	
+			@blurry = Marshal.load(Marshal.dump(@data))	
 
-			# Using @blurry[i] as a starting point, turn on blur pixels in @blurry[i+1] 
-			@blurry[i].each_with_index do |row, row_index|
+			# Using @blurry as a starting point, turn on blur pixels in @data 
+			@blurry.each_with_index do |row, row_index|
 				row.each_with_index do |pixel, column_index|
 					if pixel == 1	#Skip this whole block if pixel is not on
 						#Top pixel
 						if row_index > 0 							#Skip if top row
-							@blurry[i+1][row_index-1][column_index] = 1
+							@data[row_index-1][column_index] = 1
 						end
 
 						#Bottom pixel
 						if row_index < (@data.count - 1)			#Skip if bottom row
-							@blurry[i+1][row_index + 1][column_index] = 1
+							@data[row_index + 1][column_index] = 1
 						end
 
 						#Left pixel
 						if column_index > 0							#Skip if leftmost column
-							@blurry[i+1][row_index][column_index - 1] = 1
+							@data[row_index][column_index - 1] = 1
 						end
 
 						#Right pixel
 						if column_index < (@data[row_index].count - 1)	#Skip if rightmost column
-							@blurry[i+1][row_index][column_index + 1] = 1
+							@data[row_index][column_index + 1] = 1
 						end
 					end
 				end
 			end
 		end
 
-		#Display the blurred image
-		puts "\nBlurred image (distance:#{distance})\n"
-		@blurry[distance].each_with_index do |row, row_index|
-			row.each_with_index do |pixel, column_index|
-				print "#{pixel}"
-			end
-			print "\n"
-		end
+		#Return the final @blurry image
+		return Image.new(@blurry)
+
 	end
 end
 
@@ -90,4 +83,5 @@ puts "Original image:\n"
 image.output_image
 
 image.blur(ARGV[0].to_i)
-
+puts "\nBlurred image:\n"
+image.output_image
